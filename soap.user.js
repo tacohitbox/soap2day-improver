@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Soap2Day Improver
-// @version      1.0.0
-// @description  Improves Soap2Day sites
+// @version      1.0.1
+// @description  Improves Soap2Day sites. More information: https://github.com/tacohitbox/soap2day-improver
 // @author       tacohitbox
 // @match        *://soap2day.ac/*
 // @match        *://soap2day.to/*
@@ -23,8 +23,10 @@
     'use strict';
 
     if (detectTypePage() == "player") {
-        document.querySelector("body").style = "overflow-x:hidden;"
+        document.querySelector("body").style = "overflow-x:hidden;";
+        document.querySelector("#btnSwitch").remove();
         document.querySelector("#t3").remove();
+        document.querySelector("a:is([href='mailto:support@soap2day.net'])").parentElement.parentElement.remove();
         if (document.querySelector(".col-lg-12  a:nth-child(2)").innerHTML == "TV Series") {
             document.title = `${document.querySelector("#t1").innerHTML.replace(/\[.+?\]/g, '')} [${document.querySelector(".col-lg-12  a:nth-child(3)").innerHTML}] - SOAP2DAY`;
         } else if (document.querySelector(".col-lg-12  a:nth-child(2)").innerHTML == "Movies") {
