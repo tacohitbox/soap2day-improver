@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Soap2Day Improver
-// @version      1.0.1
+// @version      1.0.2
 // @description  Improves Soap2Day sites. More information: https://github.com/tacohitbox/soap2day-improver
 // @author       tacohitbox
 // @match        *://soap2day.ac/*
@@ -67,6 +67,12 @@
         document.querySelector("#t2 div").appendChild(btn);
         document.querySelector("#t2 div").appendChild(btn2);
     } else if (detectTypePage() == "captcha") {
+        var d = document.createElement("DIV");
+        d.style = "position:fixed;width:100%;height:100%;top:0;left:0;right:0;bottom:0;background:black;color:white;z-index:99;";
+        var t = document.createElement("H1");
+        t.innerHTML = "Please wait...";
+        d.append(t);
+        document.body.append(d);
         var c = setInterval(function() {
             if (document.querySelector(".btn-success:not([disabled])")) {
                 document.querySelector(".btn-success:not([disabled])").click();
