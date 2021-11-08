@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Soap2Day Improver
-// @version      1.0.2
+// @version      1.0.3
 // @description  Improves Soap2Day sites. More information: https://github.com/tacohitbox/soap2day-improver
 // @author       tacohitbox
 // @match        *://soap2day.ac/*
@@ -44,6 +44,79 @@
             }, 500);
         }
         window.onkeydown = function(e) {
+            switch (e.keyCode) {
+                case 82:
+                    theatreMode();
+                return;
+            }
+        }
+        var btn = document.createElement("SPAN");
+        btn.classList.add("status-panel-btn");
+        btn.id = "theatre";
+        btn.style = "margin-left:9px";
+        btn.innerHTML = "Theatre Mode";
+        btn.setAttribute("data-on", "0");
+        btn.onclick = function () {theatreMode();};
+        var btn2 = document.createElement("SPAN");
+        btn2.classList.add("status-panel-btn");
+        btn2.id = "dl";
+        btn2.style = "margin-left:9px";
+        btn2.innerHTML = "Download";
+        btn2.setAttribute("data-on", "0");
+        btn2.onclick = function () {download()};
+        document.querySelector("#t2 div").appendChild(btn);
+        document.querySelector("#t2 div").appendChild(btn2);
+    } else if (detectTypePage() == "captcha") {
+        document.title = "Captcha - SOAP2DAY";
+        var d = document.createElement("DIV");
+        d.style = "position:fixed;width:100%;height:100%;top:0;left:0;right:0;bottom:0;background:black;color:white;z-index:99;";
+        var t = document.createElement("H1");
+        t.innerHTML = "Please wait...";
+        d.append(t);
+        document.body.append(d);
+        var c = setInterval(function() {
+            if (document.querySelector(".btn-success:not([disabled])")) {
+                document.querySelector(".btn-success:not([disabled])").click();
+                clearInterval(c);
+            }
+        }, 100)
+    }
+})();
+
+function detectTypePage() {
+    if (document.getElementById("player")) {
+        return "player"
+    } else if (document.getElementById("form_id")) {
+        return "captcha";
+    } else {
+        return "generic";
+    }
+}
+
+function theatreMode() {
+    if (
+        document.getElementById("theatre").getAttribute("data-on") == "0" ||
+        !document.getElementById("theatre").getAttribute("data-on")
+    ) {
+        document.querySelector("#main-page").classList.add("col-sm-12");
+        document.querySelector("#main-page").classList.remove("col-sm-8");
+        document.querySelector(".col-sm-4").style.display = "none";
+        document.getElementById("theatre").setAttribute("data-on", "1");
+    } else {
+        document.querySelector("#main-page").classList.add("col-sm-8");
+        document.querySelector("#main-page").classList.remove("col-sm-12");
+        document.querySelector(".col-sm-4").style.display = "block";
+        document.getElementById("theatre").setAttribute("data-on", "0");
+    }
+}
+
+function download() {
+    if (document.querySelector("video")) {
+        window.open(document.querySelector("video").src);
+    } else {
+        alert("Unable to get streaming URL.");
+    }
+}
             switch (e.keyCode) {
                 case 82:
                     theatreMode();
